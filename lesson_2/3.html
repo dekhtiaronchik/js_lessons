@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use strict';
+
+        let a = +prompt("Введите целое число А");
+        let b = +prompt("Введите целое число В");
+
+        if (a >= 0 && b >= 0)
+            alert("Разность А и В равна " + (a - b));
+        else if (a < 0 && b < 0)
+            alert("Произведение А и В равно " + (a * b));
+        else if ((a < 0 && b > 0) || (a > 0 && b < 0))
+            alert("Сумма А и В равна " + (a + b));
+        else
+            alert("Вы ввели неверные символы");
+    </script>
+
+</body>
+
+</html>
