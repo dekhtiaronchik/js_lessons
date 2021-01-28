@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-5</title>
+</head>
+
+<body>
+    <script>
+        //Проверяет является ли строка числом
+        function isNumeric(str) {
+            if (typeof str != "string")
+                return false;
+            return !isNaN(str) && !isNaN(parseFloat(str))
+        }
+
+        //ввод строки и преобразование в число
+        function promptNumeric(promptText) {
+            while (true) {
+                let num = prompt(promptText);
+                if (!isNumeric(num)) {
+                    alert("Пожалуйста, вводите только числа!");
+                } else
+                    return Number(num);
+            }
+
+        }
+
+        const addition = (a, b) => a + b;
+
+        const substraction = (a, b) => a - b;
+
+        const multiplication = (a, b) => a * b;
+
+        const division = (a, b) => a / b;
+
+        function mathOperation(arg1, arg2, operation) {
+            switch (operation) {
+                case 1:
+                    alert("Cумма чисел равна: " + addition(arg1, arg2));
+                    break;
+                case 2:
+                    alert("Результат вычитания чисел равен: " + substraction(arg1, arg2));
+                    break;
+                case 3:
+                    alert("Произведение чисел равно: " + multiplication(arg1, arg2));
+                    break;
+                case 4:
+                    alert("Результат деления чисел равен: " + division(arg1, arg2));
+                    break;
+                default:
+                    alert("Операции с таким номером не существует!");
+            }
+        }
+
+
+        let arg1 = promptNumeric("Введите первое число");
+        let arg2 = promptNumeric("Введите второе число");
+        let operation = promptNumeric(
+            "Введите цифру 1 для подсчета суммы чисел, 2 - для вычитания чисел, 3 - для умножение, 4 - для выполнения операции деления"
+        )
+        let result = mathOperation(arg1, arg2, operation);
+    </script>
+</body>
+
+</html>
