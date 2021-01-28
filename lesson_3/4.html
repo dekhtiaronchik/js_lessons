@@ -39,7 +39,7 @@
 
 
         let result = products.filter(function (product) {
-            return (product.photos != null && product.photos != "");
+            return (product.photos && product.photos.length > 0);
         });
         console.log(result);
 
