@@ -73,7 +73,7 @@ const products = {
 };
 
 const btnCollection = document.querySelectorAll("button");
-const productElement = document.querySelector(".product");
+const productElement = document.querySelector(".products");
 btnCollection.forEach(button => {
     button.addEventListener("click", clickHandler);
 });
