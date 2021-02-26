@@ -1,11 +1,29 @@
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+const getRequest = (url) => {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = () => resolve(xhr.responseText);
+        xhr.onerror = () => reject(xhr.statusText);
+        xhr.send();
+    })
+}
+///////////////////////////////////////
+
+
 class ProductList {
 
     constructor(container = '.products') {
         this.container = container;
         this.products = [];
-        this.fetchProducts();
-        this.render();
-        console.log(this.getTotalPrice());
+        this.getProducts()
+            .then((products) => {
+                this.products = products;
+                this.render();
+                console.log(this.getTotalPrice());
+            });
+
     }
 
 
@@ -14,11 +32,6 @@ class ProductList {
         return this.products.reduce((sum, {
             price
         }) => sum + price, 0);
-        // let sum = 0;
-        // this.goods.forEach(good => {
-        //     sum += good.price
-        // });
-        // return sum;
     }
 
 
@@ -27,29 +40,14 @@ class ProductList {
     }
 
 
-    fetchProducts() {
-        this.products = [{
-                id: 1,
-                title: 'Notebook',
-                price: 20000
-            },
-            {
-                id: 2,
-                title: 'Mouse',
-                price: 1500
-            },
-            {
-                id: 3,
-                title: 'Keyboard',
-                price: 5000
-            },
-            {
-                id: 4,
-                title: 'Gamepad',
-                price: 4500
-            },
-        ];
+    getProducts() {
+        return getRequest(`${API}/catalogData.json`)
+            .then((response) => this.products = JSON.parse(response))
+            .catch((err) => {
+                console.log(err);
+            });
     }
+
 
     render() {
         const block = document.querySelector(this.container);
@@ -70,10 +68,10 @@ class ProductItem {
     }
 
     render() {
-        return `<div class="product-item" data-id="${this.product.id}">
+        return `<div class="product-item" data-id="${this.product.product_id}">
               <img src="${this.img}" alt="Some img">
               <div class="desc">
-                  <h3>${this.product.title}</h3>
+                  <h3>${this.product.product_name}</h3>
                   <p>${this.product.price} \u20bd</p>
                   <button class="buy-btn">Купить</button>
               </div>
