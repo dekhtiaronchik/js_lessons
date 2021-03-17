@@ -76,7 +76,7 @@ app.put('/api/cart/:id', (req, res) => {
     });
 });
 
-app.delete('/api/cart', (req, res) => {
+app.delete('/api/cart/:id', (req, res) => {
     fs.readFile('./db/userCart.json', 'utf-8', (err, data) => {
         if (err) {
             res.sendStatus(404, JSON.stringify({
@@ -86,7 +86,11 @@ app.delete('/api/cart', (req, res) => {
         } else {
             const cart = JSON.parse(data);
             const itemForDelete = cart.contents.find(item => item.id_product === +req.params.id);
-            cart.contents.splice(cart.contents.indexOf(itemForDelete), 1);
+            if (itemForDelete.quantity > 1) {
+                itemForDelete.quantity--;
+            } else {
+                cart.contents.splice(cart.contents.indexOf(itemForDelete), 1);
+            }
             fs.writeFile('./db/userCart.json', JSON.stringify(cart), (err) => {
                 if (err) {
                     res.send('{"result": 0}');

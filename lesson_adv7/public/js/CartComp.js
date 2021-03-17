@@ -28,7 +28,7 @@ Vue.component('cart', {
             }
         },
         deleteProduct(item) {
-            this.$parent.deleteJson('/api/cart')
+            this.$parent.deleteJson(`/api/cart/${item.id_product}`)
                 .then((response) => {
                     if (response.result === 1) {
                         if (item.quantity > 1) {
@@ -81,7 +81,7 @@ Vue.component('cart-item', {
         </div>
             <div class="right-block">
             <p class="product-price">{{cartItem.quantity*cartItem.price}}₽</p>
-            <button class="del-btn" @click="$emit('delete-product', cartItem.id_product)">Удалить</button>
+            <button class="del-btn" @click="$emit('delete-product', cartItem)">Удалить</button>
         </div>
     </div>
     `
