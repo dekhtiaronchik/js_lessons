@@ -5,13 +5,12 @@ Vue.component('search', {
         }
     },
     methods: {
-        filter() {
-            let regexp = new RegExp(this.searchLine, 'i');
-            this.$root.$refs.products.filteredProducts = this.$root.$refs.products.products.filter(el => regexp.test(el.product_name));
+        search() {
+            this.$emit('search', this.searchLine);
         }
     },
     template: `
-            <form action="#" class="search-form" @submit.prevent="filter">
+            <form action="#" class="search-form" @submit.prevent="search">
                 <input type="text" class="search-field" v-model="searchLine">
                 <button class="btn-search" type="submit">
                     Поиск
