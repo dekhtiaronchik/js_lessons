@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Интернет-магазин</title>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">Интернет-магазин</div>
+            <search ref="search"></search>
+            <button class="btn-cart" type="button" @click="showCart = !showCart">Корзина</button>
+        </header>
+        <main>
+            <products ref="products"></products>
+            <cart ref="cart"></cart>
+        </main>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./js/SearchComp.js"></script>
+    <script src="./js/CartComp.js"></script>
+    <script src="./js/ProductComp.js"></script>
+    <script src="./js/main.js"></script>
+
+</body>
+
+</html>
