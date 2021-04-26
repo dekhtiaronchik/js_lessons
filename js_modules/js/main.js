@@ -1,3 +1,4 @@
+import "../css/main.sass";
 import {
     diffToHtml,
     dateToObject
