@@ -1,6 +1,4 @@
-import {
-    DateTime
-} from "luxon";
+import DateTime from "luxon/src/datetime";
 
 export function dateTimeDiff(firstISO, secondISO, precision) {
     let first = DateTime.fromISO(firstISO);
