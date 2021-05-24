@@ -5,11 +5,20 @@
       placeholder="Payment date"
       v-model="date"
     />
-    <input
+    <!-- <input
       class="payment-form__input"
       placeholder="Payment category"
       v-model="category"
-    />
+    /> -->
+    <select class="payment-form__select" v-model="category">
+      <option
+        v-for="option in getCategoryList"
+        v-bind:key="option.index"
+        :value="option"
+      >
+        {{ option }}
+      </option>
+    </select>
     <input
       class="payment-form__input"
       placeholder="Payment amount"
@@ -20,6 +29,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "PaymentForm",
   props: {},
@@ -28,13 +38,21 @@ export default {
       date: "",
       category: "",
       value: 0,
+      // selectedCategory: "",
     };
   },
+  computed: { ...mapGetters(["getCategoryList"]) },
   methods: {
+    ...mapActions(["loadCategories"]),
     add() {
-      const { date, category, value } = this;
+      const { date, value, category } = this;
       this.$emit("addToList", { date, category, value });
     },
+  },
+  mounted() {
+    if (!this.getCategoryList.length) {
+      this.loadCategories();
+    }
   },
 };
 </script>
@@ -59,6 +77,12 @@ export default {
   padding: 5px;
   margin-bottom: 5px;
   width: 250px;
+}
+
+.payment-form__select {
+  padding: 5px;
+  margin-bottom: 5px;
+  width: 265px;
 }
 
 .payment-form__button {

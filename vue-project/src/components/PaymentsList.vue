@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in items" v-bind:key="item.index">
+        <tr v-for="(item, index) in getPaymentsList" v-bind:key="item.index">
           <td class="paymentsList-table__col_small">{{ index + 1 }}</td>
           <td class="paymentsList-table__col_big">{{ item.date }}</td>
           <td class="paymentsList-table__col_big">{{ item.category }}</td>
@@ -18,16 +18,23 @@
         </tr>
       </tbody>
     </table>
+    <Pagination />
   </div>
 </template>
 
 <script>
+import Pagination from "./Pagination.vue";
+
+import { mapGetters } from "vuex";
 export default {
   name: "PaymentsList",
-  props: {
-    items: Array,
+  components: {
+    Pagination,
   },
   methods: {},
+  computed: {
+    ...mapGetters(["getPaymentsList"]),
+  },
 };
 </script>
 

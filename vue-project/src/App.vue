@@ -10,7 +10,7 @@
           ADD NEW COST +
         </button>
         <PaymentForm v-show="showshowPaymentForm" @addToList="onDataAdded" />
-        <PaymentsList :items="paymentsList" />
+        <PaymentsList />
       </main>
     </div>
     <div class="diagram"></div>
@@ -21,6 +21,7 @@
 import PaymentForm from "./components/PaymentForm.vue";
 import PaymentsList from "./components/PaymentsList.vue";
 
+import { mapMutations, mapActions } from "vuex";
 export default {
   name: "App",
   components: {
@@ -30,33 +31,18 @@ export default {
   data() {
     return {
       showshowPaymentForm: false,
-      paymentsList: [
-        {
-          id: 1,
-          date: "13.05.2021",
-          category: "education",
-          value: 500,
-        },
-        {
-          id: 2,
-          date: "15.05.2021",
-          category: "food",
-          value: 26,
-        },
-        {
-          id: 3,
-          date: "12.05.2021",
-          category: "transport",
-          value: 10,
-        },
-      ],
     };
   },
   methods: {
+    ...mapMutations(["setPaymentsListData", "addDataToPaymentsList"]),
+    ...mapActions(["fetchData"]),
     onDataAdded(data) {
-      this.paymentsList.push({ ...data, id: 4 });
+      this.addDataToPaymentsList(data);
       this.showshowPaymentForm = false;
     },
+  },
+  created() {
+    this.setPaymentsListData(this.fetchData());
   },
 };
 </script>
