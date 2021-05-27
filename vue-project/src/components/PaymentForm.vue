@@ -43,24 +43,26 @@ export default {
       const { date, value, category } = this;
       this.$emit("addToList", { date, category, value });
     },
+    addFromLink(currentDate, valueLink, categoryLink) {
+      this.date = currentDate;
+      this.value = valueLink;
+      this.category = categoryLink;
+      if (currentDate && valueLink && categoryLink) {
+        this.add();
+      }
+    },
   },
   mounted() {
     if (!this.getCategoryList.length) {
       this.loadCategories();
+
+      const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
+      const valueLink = Number(this.$route.query.value);
+      const categoryLink = this.$route.params.category;
+      if (valueLink || categoryLink) {
+        this.addFromLink(currentDate, valueLink, categoryLink);
+      }
     }
-  },
-  created() {
-    this.date = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
-    this.value = this.$route.query.value;
-    this.category = this.$route.params.category;
-    // const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
-    // const valueFromRoute = this.$route.query.value;
-    // const categoryFromRoute = this.$route.params.category;
-    // if (currentDate || valueFromRoute || categoryFromRoute) {
-    //   this.date = currentDate;
-    //   this.value = valueFromRoute;
-    //   this.category = this.$route.params.category;
-    // }
   },
 };
 </script>
