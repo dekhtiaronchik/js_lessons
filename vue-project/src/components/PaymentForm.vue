@@ -2,14 +2,10 @@
   <div class="payment-form">
     <input
       class="payment-form__input"
-      placeholder="Payment date"
+      type="date"
       v-model="date"
+      :data="date"
     />
-    <!-- <input
-      class="payment-form__input"
-      placeholder="Payment category"
-      v-model="category"
-    /> -->
     <select class="payment-form__select" v-model="category">
       <option
         v-for="option in getCategoryList"
@@ -38,7 +34,6 @@ export default {
       date: "",
       category: "",
       value: 0,
-      // selectedCategory: "",
     };
   },
   computed: { ...mapGetters(["getCategoryList"]) },
@@ -53,6 +48,19 @@ export default {
     if (!this.getCategoryList.length) {
       this.loadCategories();
     }
+  },
+  created() {
+    this.date = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
+    this.value = this.$route.query.value;
+    this.category = this.$route.params.category;
+    // const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
+    // const valueFromRoute = this.$route.query.value;
+    // const categoryFromRoute = this.$route.params.category;
+    // if (currentDate || valueFromRoute || categoryFromRoute) {
+    //   this.date = currentDate;
+    //   this.value = valueFromRoute;
+    //   this.category = this.$route.params.category;
+    // }
   },
 };
 </script>

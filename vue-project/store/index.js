@@ -52,7 +52,6 @@ export default new Vuex.Store({
                                 value: 532,
                             },
                             {
-                                id: 1,
                                 date: "13.05.2021",
                                 category: "education",
                                 value: 500,
