@@ -6,7 +6,11 @@
     >
       ADD NEW COST +
     </button>
-    <PaymentForm v-show="showPaymentForm" @addToList="onDataAdded" />
+    <PaymentForm
+      v-show="showPaymentForm"
+      @addToList="onDataAdded"
+      :initialValues="initialValues"
+    />
     <PaymentsList />
   </div>
 </template>
@@ -25,6 +29,11 @@ export default {
   data() {
     return {
       showPaymentForm: false,
+      initialValues: {
+        date: "",
+        value: 0,
+        category: "",
+      },
     };
   },
   methods: {
@@ -32,12 +41,26 @@ export default {
     ...mapActions(["fetchData"]),
     onDataAdded(data) {
       this.addDataToPaymentsList(data);
-      this.showshowPaymentForm = false;
+      this.showPaymentForm = false;
     },
   },
   created() {
     this.setPaymentsListData(this.fetchData());
+    const valueLink = Number(this.$route.query.value);
+    const categoryLink = this.$route.params.category;
+    const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
+    if (valueLink > 0 || categoryLink) {
+      this.showPaymentForm = true;
+      this.initialValues.value = valueLink;
+      this.initialValues.category = categoryLink;
+      this.initialValues.date = currentDate;
+      setTimeout(() => {
+        this.addDataToPaymentsList(this.initialValues);
+        this.showPaymentForm = false;
+      }, 2000);
+    }
   },
+  mounted() {},
 };
 </script>
 

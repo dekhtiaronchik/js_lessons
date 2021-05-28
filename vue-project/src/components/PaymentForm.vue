@@ -28,7 +28,13 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "PaymentForm",
-  props: {},
+  props: {
+    initialValues: {
+      date: String,
+      category: String,
+      value: Number,
+    },
+  },
   data() {
     return {
       date: "",
@@ -36,33 +42,23 @@ export default {
       value: 0,
     };
   },
-  computed: { ...mapGetters(["getCategoryList"]) },
+  computed: {
+    ...mapGetters(["getCategoryList"]),
+  },
   methods: {
     ...mapActions(["loadCategories"]),
     add() {
       const { date, value, category } = this;
       this.$emit("addToList", { date, category, value });
     },
-    addFromLink(currentDate, valueLink, categoryLink) {
-      this.date = currentDate;
-      this.value = valueLink;
-      this.category = categoryLink;
-      if (currentDate && valueLink && categoryLink) {
-        this.add();
-      }
-    },
   },
-  mounted() {
+  created() {
     if (!this.getCategoryList.length) {
       this.loadCategories();
-
-      const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
-      const valueLink = Number(this.$route.query.value);
-      const categoryLink = this.$route.params.category;
-      if (valueLink || categoryLink) {
-        this.addFromLink(currentDate, valueLink, categoryLink);
-      }
     }
+    this.date = this.initialValues.date;
+    this.category = this.initialValues.category;
+    this.value = this.initialValues.value;
   },
 };
 </script>

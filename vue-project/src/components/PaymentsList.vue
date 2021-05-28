@@ -12,7 +12,9 @@
       <tbody>
         <tr v-for="(item, index) in getPaymentsList" v-bind:key="item.index">
           <td class="paymentsList-table__col_small">{{ index + 1 }}</td>
-          <td class="paymentsList-table__col_big">{{ item.date }}</td>
+          <td class="paymentsList-table__col_big">
+            {{ item.date.split("-").reverse().join(".") }}
+          </td>
           <td class="paymentsList-table__col_big">{{ item.category }}</td>
           <td class="paymentsList-table__col_small">{{ item.value }}</td>
         </tr>
