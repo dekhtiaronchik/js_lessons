@@ -29,6 +29,15 @@ export default new Vuex.Store({
             }
             state.categoryList.push(...payload)
         },
+        deleteItem(state, payload) {
+            state.paymentsList = state.paymentsList.filter(item => item.id !== payload);
+        },
+        updateItem(state, payload) {
+            const itemForUpdate = state.paymentsList.find(item => item.id === payload.id);
+            if (itemForUpdate) {
+                Object.assign(itemForUpdate, payload)
+            }
+        }
     },
     actions: {
         fetchData({
@@ -37,21 +46,25 @@ export default new Vuex.Store({
             return new Promise((resolve) => {
                     setTimeout(() => {
                         resolve([{
+                                id: 123,
                                 date: '28.03.2020',
                                 category: 'Food',
                                 value: 169,
                             },
                             {
+                                id: 126,
                                 date: '24.03.2020',
                                 category: 'Transport',
                                 value: 360,
                             },
                             {
+                                id: 125,
                                 date: '24.03.2020',
                                 category: 'Food',
                                 value: 532,
                             },
                             {
+                                id: 124,
                                 date: "13.05.2021",
                                 category: "education",
                                 value: 500,

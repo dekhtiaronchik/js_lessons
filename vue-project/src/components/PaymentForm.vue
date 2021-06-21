@@ -4,7 +4,7 @@
       class="payment-form__input"
       type="date"
       v-model="date"
-      :data="date"
+      :date="date"
     />
     <select class="payment-form__select" v-model="category">
       <option
@@ -20,12 +20,12 @@
       placeholder="Payment amount"
       v-model.number="value"
     />
-    <button class="payment-form__button" @click="add">ADD +</button>
+    <button class="payment-form__button" @click="save">ADD +</button>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "PaymentForm",
   props: {
@@ -34,6 +34,7 @@ export default {
       category: String,
       value: Number,
     },
+    id: Number,
   },
   data() {
     return {
@@ -43,13 +44,21 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCategoryList"]),
+    ...mapGetters(["getCategoryList", "getPaymentsList"]),
   },
   methods: {
     ...mapActions(["loadCategories"]),
-    add() {
+    ...mapMutations(["updateItem"]),
+    save() {
       const { date, value, category } = this;
-      this.$emit("addToList", { date, category, value });
+      const payload = { date, value, category };
+      if (this.id) {
+        payload.id = this.id;
+        this.updateItem(payload);
+      } else {
+        this.$emit("addToList", { date, category, value });
+      }
+      this.$modal.close();
     },
   },
   created() {
@@ -59,6 +68,16 @@ export default {
     this.date = this.initialValues.date;
     this.category = this.initialValues.category;
     this.value = this.initialValues.value;
+  },
+  mounted() {
+    if (this.id) {
+      const item = this.getPaymentsList.find((p) => p.id === this.id);
+      if (item) {
+        this.date = item.date;
+        this.category = item.category;
+        this.value = item.value;
+      }
+    }
   },
 };
 </script>
@@ -72,7 +91,6 @@ export default {
   padding: 15px;
   width: 300px;
   height: 150px;
-  position: absolute;
   z-index: 1;
   background: rgb(255, 255, 255);
   -webkit-box-shadow: 1px 1px 7px -1px rgba(0, 0, 0, 0.97);

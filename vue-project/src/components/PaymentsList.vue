@@ -10,13 +10,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in getPaymentsList" v-bind:key="item.index">
+        <tr v-for="(item, index) in getPaymentsList" v-bind:key="item.id">
           <td class="paymentsList-table__col_small">{{ index + 1 }}</td>
           <td class="paymentsList-table__col_big">
             {{ item.date.split("-").reverse().join(".") }}
           </td>
           <td class="paymentsList-table__col_big">{{ item.category }}</td>
           <td class="paymentsList-table__col_small">{{ item.value }}</td>
+          <td
+            class="paymentsList-table__col_context"
+            @click="onContextMenuClick(item.id)"
+          >
+            ...
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,13 +33,33 @@
 <script>
 import Pagination from "./Pagination.vue";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "PaymentsList",
   components: {
     Pagination,
   },
-  methods: {},
+  methods: {
+    ...mapMutations(["deleteItem"]),
+    onContextMenuClick(id) {
+      const items = [
+        {
+          text: "delete",
+          action: () => {
+            this.deleteItem(id);
+          },
+        },
+        {
+          text: "edit",
+          action: () => {
+            console.log("edit", id);
+            this.$modal.show("paymentform", { id });
+          },
+        },
+      ];
+      this.$context.show({ event, items });
+    },
+  },
   computed: {
     ...mapGetters(["getPaymentsList"]),
   },
@@ -69,5 +95,10 @@ export default {
 
 .paymentsList-table__col_big {
   width: 120px;
+}
+
+.paymentsList-table__col_context {
+  width: 20px;
+  cursor: pointer;
 }
 </style>

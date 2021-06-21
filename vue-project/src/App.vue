@@ -8,15 +8,22 @@
         <router-link class="header__link" to="/about">About</router-link>
       </header>
       <router-view />
+      <transition name="fade">
+        <ContextMenu />
+      </transition>
     </div>
     <div class="diagram"></div>
   </div>
 </template>
 
 <script>
+import ContextMenu from "./components/modalWindows/ContextMenu";
 export default {
   name: "App",
-  components: {},
+  components: {
+    ContextMenu,
+  },
+  mounted() {},
 };
 </script>
 
@@ -54,6 +61,16 @@ export default {
 
   button:focus {
     outline: none;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
 }
 </style>
