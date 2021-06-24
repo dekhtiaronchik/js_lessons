@@ -1,14 +1,15 @@
 <template>
   <div class="calculator">
     <div class="display">
-      <input v-model="operand1" ref="op1" />
-      <input v-model="operand2" ref="op2" />
+      <input v-model="operand1" ref="op1" name="operand1" />
+      <input v-model="operand2" ref="op2" name="operand2" />
       = {{ result }}
     </div>
     <div class="keyboard">
       <button
         v-for="operation in operations"
         :key="operation.name"
+        :name="operation.name"
         @click="calculate(operation.name)"
       >
         {{ operation.desctiption }}
@@ -19,13 +20,19 @@
       <input type="checkbox" id="checkbox" v-model="showKeyboard" />
       <label for="checkbox">Отобразить экранную клавиатуру</label>
       <div v-show="showKeyboard">
-        <button v-for="number in numbers" :key="number" @click="onNumberClick">
-          {{ number }}
+        <button
+          v-for="number in numbers"
+          :key="number.num"
+          @click="onNumberClick"
+          :name="number.name"
+        >
+          {{ number.num }}
         </button>
-        <button @click="onDeleteNumber">Удалить</button>
+        <button @click="onDeleteNumber" name="deleteButton">Удалить</button>
         <input
           type="radio"
           id="op1"
+          name="radio1"
           value="Операнд1"
           ref="radio1"
           v-model="picked"
@@ -35,6 +42,7 @@
         <input
           type="radio"
           id="op2"
+          name="radio2"
           value="Операнд2"
           ref="radio2"
           v-model="picked"
@@ -87,7 +95,19 @@ export default {
       operand2: "",
       result: 0,
       error: "",
-      numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      numbers: [
+        { num: 0, name: "zero" },
+        { num: 1, name: "one" },
+        { num: 2, name: "twu" },
+        { num: 3, name: "three" },
+        { num: 4, name: "for" },
+        { num: 5, name: "five" },
+        { num: 6, name: "six" },
+        { num: 7, name: "seven" },
+        { num: 8, name: "eyth" },
+        { num: 9, name: "nine" },
+      ],
+      // numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       showKeyboard: false,
       picked: false,
     };
