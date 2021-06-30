@@ -1,27 +1,16 @@
 <template>
-  <div class="payment-form">
-    <input
-      class="payment-form__input"
-      type="date"
-      v-model="date"
-      :date="date"
-    />
-    <select class="payment-form__select" v-model="category">
-      <option
-        v-for="option in getCategoryList"
-        v-bind:key="option.index"
-        :value="option"
-      >
-        {{ option }}
-      </option>
-    </select>
-    <input
-      class="payment-form__input"
-      placeholder="Payment amount"
-      v-model.number="value"
-    />
-    <button class="payment-form__button" @click="save">ADD +</button>
-  </div>
+  <v-card class="text-left pa-8">
+    <v-text-field v-model="date" label="Date" :date="date"></v-text-field>
+    <v-select
+      v-model="category"
+      label="Category"
+      :items="getCategoryList"
+    ></v-select>
+    <v-text-field v-model.number="value" label="Value"></v-text-field>
+    <v-btn color="teal" dark @click="save">
+      ADD <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-card>
 </template>
 
 <script>

@@ -1,8 +1,5 @@
 <template>
-  <div class="pagination">
-    <button>Previous</button>
-    <button>Next</button>
-  </div>
+  <v-pagination :length="6" class="mt-15"></v-pagination>
 </template>
 
 <script>

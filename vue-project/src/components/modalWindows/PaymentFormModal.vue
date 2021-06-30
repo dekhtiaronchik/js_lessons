@@ -1,13 +1,13 @@
 <template>
-  <div class="modal" v-if="shown">
-    <PaymentForm
-      v-if="shown === 'paymentform'"
-      @addToList="onDataAdded"
-      :initialValues="initialValues"
-      :id="settings && settings.id"
-    />
-    <button @click="onClose">Close</button>
-  </div>
+  <v-dialog v-model="shown" :width="400">
+    <v-card>
+      <PaymentForm
+        @addToList="onDataAdded"
+        :initialValues="initialValues"
+        :id="settings && settings.id"
+      />
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -34,10 +34,7 @@ export default {
     ...mapActions(["fetchData"]),
     onDataAdded(data) {
       this.addDataToPaymentsList(data);
-      this.shown = false;
-    },
-    showPaymentForm() {
-      this.shown = true;
+      this.onClose();
     },
     onShow({ name, settings }) {
       this.shown = name;

@@ -15,6 +15,19 @@ export default new Vuex.Store({
                 .reduce((res, cur) => res + cur.value, 0)
         },
         getCategoryList: state => state.categoryList,
+        getPaymentChart: state => {
+            if (!Array.isArray(state.paymentsList)) {
+                return {}
+            }
+            return state.paymentsList.reduce((acc, paymentItem) => {
+                if (acc[paymentItem.category]) {
+                    acc[paymentItem.category] += paymentItem.value
+                } else {
+                    acc[paymentItem.category] = paymentItem.value
+                }
+                return acc
+            }, {})
+        }
     },
     mutations: {
         setPaymentsListData(state, payload) {

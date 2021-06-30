@@ -1,5 +1,5 @@
 <template>
-  <div class="context" v-if="shown" :style="styles">
+  <!-- <div class="context" v-if="shown" :style="styles">
     <div
       v-for="item in items"
       :key="item.text"
@@ -8,7 +8,18 @@
     >
       {{ item.text }}
     </div>
-  </div>
+  </div> -->
+  <v-menu v-model="shown" :width="200" absolute offset-y>
+    <v-list>
+      <v-list-item
+        v-for="item in items"
+        :key="item.text"
+        @click="onClick(item)"
+      >
+        <v-list-item-title>{{ item.text }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 
 <script>
@@ -58,16 +69,16 @@ export default {
 
 <style lang="scss">
 .context {
-  height: 40px;
-  width: 100px;
-  position: absolute;
-  background: rgb(255, 255, 255);
-  -webkit-box-shadow: 1px 1px 4px -1px rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 4px -1px rgba(0, 0, 0, 0.5);
+  // height: 40px;
+  // width: 100px;
+  // position: absolute;
+  // background: rgb(255, 255, 255);
+  // -webkit-box-shadow: 1px 1px 4px -1px rgba(0, 0, 0, 0.5);
+  // box-shadow: 1px 1px 4px -1px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
 
-.context__item:hover {
-  background: rgb(223, 236, 229);
-}
+// .context__item:hover {
+// background: rgb(223, 236, 229);
+// }
 </style>

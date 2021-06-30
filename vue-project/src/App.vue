@@ -1,28 +1,19 @@
 <template>
-  <div id="app">
-    <div class="payment-info">
-      <header class="header">
-        <router-link class="header__link" to="/dashboard"
-          >Dashboard</router-link
-        >
-        <router-link class="header__link" to="/about">About</router-link>
-      </header>
+  <v-app>
+    <v-app-bar app flat>
+      <v-btn plain :ripple="false" to="/dashboard">Dashboard</v-btn>
+      <v-btn plain :ripple="false" to="/about">About</v-btn>
+    </v-app-bar>
+    <v-main>
       <router-view />
-      <transition name="fade">
-        <ContextMenu />
-      </transition>
-    </div>
-    <div class="diagram"></div>
-  </div>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import ContextMenu from "./components/modalWindows/ContextMenu";
 export default {
   name: "App",
-  components: {
-    ContextMenu,
-  },
+  components: {},
   mounted() {},
 };
 </script>
@@ -61,16 +52,6 @@ export default {
 
   button:focus {
     outline: none;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
   }
 }
 </style>
