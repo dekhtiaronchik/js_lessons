@@ -4,11 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const myMessage = "My first react app :)";
-
 ReactDOM.render(
   <React.StrictMode>
-    <App message={myMessage} />{" "}
+    <App />{" "}
   </React.StrictMode>,
   document.getElementById("root")
 );
