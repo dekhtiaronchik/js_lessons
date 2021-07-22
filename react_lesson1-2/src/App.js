@@ -1,44 +1,30 @@
 import "./App.css";
 import React from "react";
-import MessagesList from "./components/MessageList/MessageList";
-import MessageForm from "./components/MessageForm/MessageForm";
-
-function Message(props) {
-  return <h3 className="header__message"> {props.message} </h3>;
-}
-
-const createBotMessage = (messages, setMessages) => {
-  setTimeout(() => {
-    const newMessages = [
-      ...messages,
-      { author: "Bot", text: "Message from bot" },
-    ];
-    setMessages(newMessages);
-  }, 1500);
-};
+import ChatItem from "./components/Chats/ChatItem";
+import ChatList from "./components/Chats/ChatList";
 
 function App() {
-  const [messages, setMessages] = React.useState([]);
+  const [chats, setChats] = React.useState([
+    { id: 123, name: "Чатик 1" },
+    { id: 124, name: "Чатик 2" },
+    { id: 125, name: "Чатик 3" },
+  ]);
+  const [currentChat, setCurrentChat] = React.useState(chats[0]);
 
-  const onSubmitMessage = (message) => {
-    const newMessages = [...messages, { author: "User", text: message }];
-    setMessages(newMessages);
+  const handleChangeChat = (chat) => {
+    setCurrentChat(chat);
   };
 
-  React.useEffect(() => {
-    if (messages.length && messages[messages.length - 1].author === "User") {
-      createBotMessage(messages, setMessages);
-    }
-  }, [messages]);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        My homework
-        <Message message="Message from Message component"></Message>
-        <MessagesList messages={messages} />
-        <MessageForm onSubmit={onSubmitMessage} />
-      </header>
+    <div className="app">
+      <div className="container">
+        <ChatList
+          chats={chats}
+          currentChat={currentChat}
+          onChangeChat={handleChangeChat}
+        ></ChatList>
+        <ChatItem id={currentChat.id}></ChatItem>
+      </div>
     </div>
   );
 }
