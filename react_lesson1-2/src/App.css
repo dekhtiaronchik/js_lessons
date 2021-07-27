@@ -6,6 +6,11 @@
   width: 25%;
 }
 
+.chat-list__link {
+  text-decoration: none;
+  color: rgb(92, 92, 92);
+}
+
 .chat-item {
   display: flex;
   flex-direction: column;
