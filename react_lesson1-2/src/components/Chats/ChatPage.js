@@ -3,7 +3,7 @@ import { useParams, Redirect } from "react-router";
 import ChatItem from "./ChatItem";
 import ChatList from "./ChatList";
 
-function Chats() {
+function ChatPage() {
   const { chatId } = useParams();
 
   const [chats, setChats] = React.useState([
@@ -17,12 +17,13 @@ function Chats() {
     setCurrentChat(chat);
   };
 
-  const isChatExists = () => {
-    return Boolean(chats.find((chat) => chat.id === chatId));
-  };
-
-  if (!isChatExists) {
+  const selectedChat = chats.find((chat) => chat.id === chatId);
+  if (!selectedChat && chatId) {
     return <Redirect to="/chats" />;
+  }
+
+  if (selectedChat && currentChat.id !== selectedChat.id) {
+    setCurrentChat(selectedChat);
   }
 
   return (
@@ -31,11 +32,10 @@ function Chats() {
         chats={chats}
         currentChat={currentChat}
         onChangeChat={handleChangeChat}
-        chatId={chatId}
       ></ChatList>
       <ChatItem id={currentChat.id}></ChatItem>
     </div>
   );
 }
 
-export default Chats;
+export default ChatPage;

@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router";
 import { BrowserRouter, Link } from "react-router-dom";
 import App from "../App";
 import Profile from "../components/Profile/Profile";
-import Chats from "./Chats/Chats";
+import ChatPage from "./Chats/ChatPage";
 
 export default function Routes(props) {
   return (
@@ -33,11 +33,11 @@ export default function Routes(props) {
         </Route>
 
         <Route exact path="/chats">
-          <Chats />
+          <ChatPage />
         </Route>
 
         <Route path="/chats/:chatId">
-          <Chats />
+          <ChatPage />
         </Route>
 
         <Route>
