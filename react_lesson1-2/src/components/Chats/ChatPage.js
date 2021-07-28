@@ -1,39 +1,76 @@
 import React from "react";
 import { useParams, Redirect } from "react-router";
-import ChatItem from "./ChatItem";
+import ChatMessages from "./ChatMessages";
 import ChatList from "./ChatList";
 
-function ChatPage() {
-  const { chatId } = useParams();
+const initialChats = [
+  {
+    id: "chat1",
+    name: "Chat1",
+    messages: [{ text: "FirstMessage", author: "Bot" }],
+  },
+  {
+    id: "chat2",
+    name: "Chat2",
+    messages: [{ text: "FirstMessageHereToo!", author: "Bot" }],
+  },
+  {
+    id: "chat3",
+    name: "Chat3",
+    messages: [{ text: "FirstMessageHereToo!", author: "Bot" }],
+  },
+];
 
-  const [chats, setChats] = React.useState([
-    { id: "chat1", name: "Чатик 1" },
-    { id: "chat2", name: "Чатик 2" },
-    { id: "chat3", name: "Чатик 3" },
-  ]);
-  const [currentChat, setCurrentChat] = React.useState(chats[0]);
+function ChatPage() {
+  const { chatId: chatIdParam } = useParams();
+
+  const [chats, setChats] = React.useState(initialChats);
+  const [currentChatId, setCurrentChatId] = React.useState(chats[0].id);
 
   const handleChangeChat = (chat) => {
-    setCurrentChat(chat);
+    setCurrentChatId(chat.id);
   };
 
-  const selectedChat = chats.find((chat) => chat.id === chatId);
-  if (!selectedChat && chatId) {
+  const onAddMessage = (chatId, newMessage) => {
+    const targetChatIndex = chats.findIndex((chat) => chat.id === chatId);
+    if (targetChatIndex === -1) {
+      return;
+    }
+    const targetChat = chats[targetChatIndex];
+    const newChat = {
+      ...targetChat,
+      messages: [...targetChat.messages, newMessage],
+    };
+    const newChats = [
+      ...chats.slice(0, targetChatIndex),
+      newChat,
+      ...chats.slice(targetChatIndex + 1),
+    ];
+    setChats(newChats);
+  };
+
+  const selectedChat = chats.find((chat) => chat.id === chatIdParam);
+  if (!selectedChat && chatIdParam) {
     return <Redirect to="/chats" />;
   }
 
-  if (selectedChat && currentChat.id !== selectedChat.id) {
-    setCurrentChat(selectedChat);
+  if (selectedChat && currentChatId !== selectedChat.id) {
+    setCurrentChatId(selectedChat.id);
   }
+  const currentChat = chats.find((chat) => chat.id === currentChatId);
 
   return (
     <div className="container">
       <ChatList
         chats={chats}
-        currentChat={currentChat}
+        currentChatId={currentChatId}
         onChangeChat={handleChangeChat}
       ></ChatList>
-      <ChatItem id={currentChat.id}></ChatItem>
+      <ChatMessages
+        chatId={currentChatId}
+        messages={currentChat.messages}
+        onAddMessage={onAddMessage}
+      ></ChatMessages>
     </div>
   );
 }
