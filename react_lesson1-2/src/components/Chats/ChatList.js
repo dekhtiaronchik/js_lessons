@@ -5,7 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import { Link } from "react-router-dom";
 
-function ChatList({ chats, currentChat, onChangeChat }) {
+function ChatList({ chats, currentChatId, onChangeChat }) {
   const listChats = chats.map((chatItem) => (
     <Link
       to={`/chats/${chatItem.id}`}
@@ -14,7 +14,7 @@ function ChatList({ chats, currentChat, onChangeChat }) {
     >
       <ListItem
         button
-        selected={chatItem.id === currentChat.id}
+        selected={chatItem.id === currentChatId}
         onClick={() => onChangeChat(chatItem)}
       >
         <ListItemAvatar>
