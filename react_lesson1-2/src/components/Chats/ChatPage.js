@@ -1,52 +1,25 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, Redirect } from "react-router";
 import ChatMessages from "./ChatMessages";
 import ChatList from "./ChatList";
-
-const initialChats = [
-  {
-    id: "chat1",
-    name: "Chat1",
-    messages: [{ text: "FirstMessage", author: "Bot" }],
-  },
-  {
-    id: "chat2",
-    name: "Chat2",
-    messages: [{ text: "FirstMessageHereToo!", author: "Bot" }],
-  },
-  {
-    id: "chat3",
-    name: "Chat3",
-    messages: [{ text: "FirstMessageHereToo!", author: "Bot" }],
-  },
-];
+import { addMessage } from "../../store/messages/actions";
 
 function ChatPage() {
-  const { chatId: chatIdParam } = useParams();
+  const dispatch = useDispatch();
+  const chats = useSelector((state) => state.chats.chatList);
+  const messages = useSelector((state) => state.messages.messageList);
+  const [currentChatId, setCurrentChatId] = React.useState(chats[0]?.id);
+  const chatMessages = messages[currentChatId] || [];
 
-  const [chats, setChats] = React.useState(initialChats);
-  const [currentChatId, setCurrentChatId] = React.useState(chats[0].id);
+  const { chatId: chatIdParam } = useParams();
 
   const handleChangeChat = (chat) => {
     setCurrentChatId(chat.id);
   };
 
-  const onAddMessage = (chatId, newMessage) => {
-    const targetChatIndex = chats.findIndex((chat) => chat.id === chatId);
-    if (targetChatIndex === -1) {
-      return;
-    }
-    const targetChat = chats[targetChatIndex];
-    const newChat = {
-      ...targetChat,
-      messages: [...targetChat.messages, newMessage],
-    };
-    const newChats = [
-      ...chats.slice(0, targetChatIndex),
-      newChat,
-      ...chats.slice(targetChatIndex + 1),
-    ];
-    setChats(newChats);
+  const onAddMessage = (chatId, message) => {
+    dispatch(addMessage(chatId, message));
   };
 
   const selectedChat = chats.find((chat) => chat.id === chatIdParam);
@@ -57,7 +30,6 @@ function ChatPage() {
   if (selectedChat && currentChatId !== selectedChat.id) {
     setCurrentChatId(selectedChat.id);
   }
-  const currentChat = chats.find((chat) => chat.id === currentChatId);
 
   return (
     <div className="container">
@@ -66,11 +38,15 @@ function ChatPage() {
         currentChatId={currentChatId}
         onChangeChat={handleChangeChat}
       ></ChatList>
-      <ChatMessages
-        chatId={currentChatId}
-        messages={currentChat.messages}
-        onAddMessage={onAddMessage}
-      ></ChatMessages>
+      {chats.length ? (
+        <ChatMessages
+          chatId={currentChatId}
+          messages={chatMessages}
+          onAddMessage={onAddMessage}
+        />
+      ) : (
+        <div>Добавьте новый чат, чтобы начать!</div>
+      )}
     </div>
   );
 }
