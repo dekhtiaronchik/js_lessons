@@ -7,3 +7,18 @@ export const addMessage = (chatId, message) => ({
     message,
   },
 });
+
+export const addMessageWithThunk = (chatId, message) => (
+  dispatch,
+  getState
+) => {
+  dispatch(addMessage(chatId, message));
+  setTimeout(() => {
+    dispatch(
+      addMessage(chatId, {
+        author: "Bot",
+        text: "Message from bot",
+      })
+    );
+  }, 1500);
+};
