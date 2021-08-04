@@ -1,29 +1,20 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import MessagesList from "../MessageList/MessageList";
 import MessageForm from "../MessageForm/MessageForm";
+import { addMessageWithThunk } from "../../store/messages/actions";
 
 function ChatMessages({ messages, onAddMessage, chatId }) {
-  const timer = React.useRef(null);
-
-  const createBotMessage = () => {
-    timer.current = setTimeout(() => {
-      onAddMessage(chatId, { author: "Bot", text: "Message from bot" });
-    }, 1500);
-  };
+  const dispatch = useDispatch();
 
   const onSubmitMessage = (message) => {
-    onAddMessage(chatId, { author: "User", text: message });
+    dispatch(
+      addMessageWithThunk(chatId, {
+        author: "user",
+        text: message,
+      })
+    );
   };
-
-  React.useEffect(() => {
-    return () => clearTimeout(timer.current);
-  });
-
-  React.useEffect(() => {
-    if (messages.length && messages[messages.length - 1].author === "User") {
-      createBotMessage();
-    }
-  }, [messages]);
 
   return (
     <div className="chat-item">
