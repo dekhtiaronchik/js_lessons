@@ -4,6 +4,7 @@ import { BrowserRouter, Link } from "react-router-dom";
 import App from "../App";
 import Profile from "../components/Profile/Profile";
 import ChatPage from "./Chats/ChatPage";
+import News from "./News/News";
 
 export default function Routes(props) {
   return (
@@ -16,6 +17,10 @@ export default function Routes(props) {
 
           <li>
             <Link to="/chats">chats</Link>
+          </li>
+
+          <li>
+            <Link to="/news">news</Link>
           </li>
 
           <li>
@@ -38,6 +43,10 @@ export default function Routes(props) {
 
         <Route path="/chats/:chatId">
           <ChatPage />
+        </Route>
+
+        <Route exact path="/news">
+          <News />
         </Route>
 
         <Route>
