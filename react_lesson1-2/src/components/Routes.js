@@ -5,6 +5,8 @@ import App from "../App";
 import Profile from "../components/Profile/Profile";
 import ChatPage from "./Chats/ChatPage";
 import News from "./News/News";
+import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
 
 export default function Routes(props) {
   return (
@@ -26,6 +28,12 @@ export default function Routes(props) {
           <li>
             <Link to="/">Home</Link>
           </li>
+          <li>
+            <Link to="/signup">Registration</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
         </ul>
       </header>
       <Switch>
@@ -43,6 +51,14 @@ export default function Routes(props) {
 
         <Route path="/chats/:chatId">
           <ChatPage />
+        </Route>
+
+        <Route exact path="/login">
+          <Login />
+        </Route>
+
+        <Route exact path="/signup">
+          <SignUp />
         </Route>
 
         <Route exact path="/news">

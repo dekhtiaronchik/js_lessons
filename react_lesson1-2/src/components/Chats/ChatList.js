@@ -48,7 +48,11 @@ function ChatList({ chats, currentChatId, onChangeChat }) {
 
   return (
     <div className="chat-list-container">
-      <input value={newChatName} onChange={handleChange}></input>
+      <input
+        value={newChatName}
+        onChange={handleChange}
+        placeholder="Введите название чата"
+      ></input>
       <button onClick={onAddChat}>Новый чат</button>
 
       <List>{listChats}</List>

@@ -15,13 +15,15 @@ function Profile() {
       <h3>Profile page</h3>
       {showName && <p>Name: {name}</p>}
       <p>Age: {age}</p>
-      <input
-        type="checkbox"
-        checked={showName}
-        value={showName}
-        onChange={setShowName}
-      />
-      <span>Show Name</span>
+      <label>
+        <input
+          type="checkbox"
+          checked={showName}
+          value={showName}
+          onChange={setShowName}
+        />
+        Show Name
+      </label>
     </div>
   );
 }
