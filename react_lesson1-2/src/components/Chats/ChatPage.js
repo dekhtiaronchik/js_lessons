@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, Redirect } from "react-router";
 import ChatMessages from "./ChatMessages";
 import ChatList from "./ChatList";
-import { addMessage } from "../../store/messages/actions";
+import {
+  addMessage,
+  subscribeOnMessagesChangings,
+} from "../../store/messages/actions";
 
 function ChatPage() {
   const dispatch = useDispatch();
@@ -13,6 +16,10 @@ function ChatPage() {
   const chatMessages = messages[currentChatId] || [];
 
   const { chatId: chatIdParam } = useParams();
+
+  React.useEffect(() => {
+    dispatch(subscribeOnMessagesChangings(currentChatId));
+  }, []);
 
   const handleChangeChat = (chat) => {
     setCurrentChatId(chat.id);
