@@ -6,10 +6,6 @@ const initialState = {
       id: "id0",
       name: "Chat 1",
     },
-    {
-      id: "id1",
-      name: "Chat 2",
-    },
   ],
 };
 
