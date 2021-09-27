@@ -4,7 +4,7 @@ import MessagesList from "../MessageList/MessageList";
 import MessageForm from "../MessageForm/MessageForm";
 import { addMessageWithThunk } from "../../store/messages/actions";
 
-function ChatMessages({ messages, onAddMessage, chatId }) {
+function ChatMessages({ messages, chatId }) {
   const dispatch = useDispatch();
 
   const onSubmitMessage = (message) => {

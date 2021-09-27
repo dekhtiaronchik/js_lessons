@@ -1,46 +1,28 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router";
-import { BrowserRouter, Link } from "react-router-dom";
-import App from "../App";
-import Profile from "../components/Profile/Profile";
+import { BrowserRouter } from "react-router-dom";
+import Header from "./Header/Header";
+import Profile from "./Profile/Profile";
 import ChatPage from "./Chats/ChatPage";
 import News from "./News/News";
 import Login from "./login/Login";
+import SignUp from "./SignUp/SignUp";
+import HomePage from "./HomePage";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = (props) => {
-  const isAuthed = useSelector((state) => state.profile.isAuthed);
-  return isAuthed ? <Route {...props} /> : <Redirect to="/login" />;
+  const isAuthenticated = useSelector((state) => state.profile.isAuthenticated);
+  return isAuthenticated ? <Route {...props} /> : <Redirect to="/login" />;
 };
 
-export default function Routes(props) {
+export default function MasterLayout(props) {
   return (
     <BrowserRouter>
-      <header>
-        <ul>
-          <li>
-            <Link to="/profile">profile</Link>
-          </li>
+      <Header />
 
-          <li>
-            <Link to="/chats">chats</Link>
-          </li>
-
-          <li>
-            <Link to="/news">news</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-      </header>
       <Switch>
         <Route exact path="/">
-          <App />
+          <HomePage />
         </Route>
 
         <PrivateRoute path="/profile">
@@ -61,6 +43,10 @@ export default function Routes(props) {
 
         <Route exact path="/login">
           <Login />
+        </Route>
+
+        <Route exact path="/signUp">
+          <SignUp />
         </Route>
 
         <Route>

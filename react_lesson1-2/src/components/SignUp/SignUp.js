@@ -1,11 +1,9 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router";
 import firebase from "firebase";
-import { useDispatch, useSelector } from "react-redux";
 
-function Login() {
+export default function SignUp() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -18,13 +16,13 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
+    console.log("Создаем новый профиль");
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
     } catch (error) {
       setError(error.message);
     }
-    console.log("login!");
   };
 
   const handleSubmit = () => {
@@ -32,12 +30,12 @@ function Login() {
       setError("Заполните поля");
       return;
     }
-    handleLogin();
+    handleSignUp();
   };
 
   return (
     <div>
-      <p>Login</p>
+      <p>Sign up</p>
       <div>
         <TextField
           placeholder="Email"
@@ -57,11 +55,9 @@ function Login() {
         />
       </div>
       <div>
-        <Button onClick={handleSubmit}>Login</Button>
+        <Button onClick={handleSubmit}>SignUp</Button>
       </div>
       <p>{error}</p>
     </div>
   );
 }
-
-export default Login;

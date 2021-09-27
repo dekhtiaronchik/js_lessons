@@ -4,7 +4,7 @@ import { persistStore, persistReducer } from "redux-persist";
 // import storage from "redux-persist/lib/storage";
 import profileReducer from "./profile/reducer";
 import chatsReducer from "./chats/reducer";
-import messageReducer from "./messages/reducer";
+import { reducer as messageReducer } from "./messages";
 import newsReducer from "./news/reducer";
 
 const rootReducer = combineReducers({

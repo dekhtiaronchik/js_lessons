@@ -15,18 +15,11 @@ export const addMessageWithThunk = (chatId, message) => (
   getState
 ) => {
   firebase.database().ref("messages").child(chatId).push(message);
-  dispatch(addMessage(chatId, message));
   setTimeout(() => {
     firebase.database().ref("messages").child(chatId).push({
       author: "Bot",
       text: "Message from bot",
     });
-    dispatch(
-      addMessage(chatId, {
-        author: "Bot",
-        text: "Message from bot",
-      })
-    );
   }, 1500);
 };
 
@@ -37,8 +30,6 @@ export const subscribeOnMessagesChangings = (chatId) => {
       .ref("messages")
       .child(chatId)
       .on("child_added", (snapshot) => {
-        console.log("child_added", snapshot.val());
-
         dispatch(addMessage(chatId, snapshot.val()));
       });
 
@@ -47,8 +38,6 @@ export const subscribeOnMessagesChangings = (chatId) => {
       .ref("messages")
       .child(chatId)
       .on("child_changed", (snapshot) => {
-        console.log("child_changed", snapshot.val());
-
         dispatch(addMessage(chatId, snapshot.val()));
       });
   };

@@ -25,10 +25,6 @@ function ChatPage() {
     setCurrentChatId(chat.id);
   };
 
-  const onAddMessage = (chatId, message) => {
-    dispatch(addMessage(chatId, message));
-  };
-
   const selectedChat = chats.find((chat) => chat.id === chatIdParam);
   if (!selectedChat && chatIdParam) {
     return <Redirect to="/chats" />;
@@ -46,11 +42,7 @@ function ChatPage() {
         onChangeChat={handleChangeChat}
       ></ChatList>
       {chats.length ? (
-        <ChatMessages
-          chatId={currentChatId}
-          messages={chatMessages}
-          onAddMessage={onAddMessage}
-        />
+        <ChatMessages chatId={currentChatId} messages={chatMessages} />
       ) : (
         <div>Добавьте новый чат, чтобы начать!</div>
       )}
