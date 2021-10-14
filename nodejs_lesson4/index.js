@@ -5,7 +5,6 @@ const { lstatSync } = require("fs");
 const path = require("path");
 const yargs = require("yargs");
 const inquirer = require("inquirer");
-const readline = require("readline");
 
 let currentDirectory = process.cwd();
 
