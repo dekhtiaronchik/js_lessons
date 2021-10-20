@@ -11,13 +11,15 @@ const fs = require("fs");
   http
     .createServer((req, res) => {
       const fullPath = path.join(process.cwd(), req.url);
-      const file = isFile(fullPath);
+
       const exists = fs.existsSync(fullPath);
-      if (file) {
-        return fs.createReadStream(fullPath).pipe(res);
-      }
       if (!exists) {
         return res.end("File or directory not found!");
+      }
+
+      const file = isFile(fullPath);
+      if (file) {
+        return fs.createReadStream(fullPath).pipe(res);
       }
 
       let listItems = "";
