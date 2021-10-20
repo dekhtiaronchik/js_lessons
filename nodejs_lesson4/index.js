@@ -1,68 +1,39 @@
-#!/usr/bin/env node
-
-const fs = require("fs/promises");
-const { lstatSync } = require("fs");
+const http = require("http");
 const path = require("path");
-const yargs = require("yargs");
-const inquirer = require("inquirer");
+const fs = require("fs");
 
-let currentDirectory = process.cwd();
+(async () => {
+  const isFile = (filePath) => {
+    return fs.lstatSync(filePath).isFile();
+  };
+  console.log("starting");
 
-const options = yargs
-  .positional("d", {
-    describe: "Path to directory",
-    default: process.cwd(),
-  })
-  .positional("p", {
-    describe: "Pattern",
-    default: "",
-  }).argv;
+  http
+    .createServer((req, res) => {
+      const fullPath = path.join(process.cwd(), req.url);
 
-class ListItem {
-  constructor(fileName, path) {
-    this.fileName = fileName;
-    this.path = path;
-  }
-  get isDir() {
-    return lstatSync(this.path).isDirectory();
-  }
-}
-
-const run = async () => {
-  const list = await fs.readdir(currentDirectory);
-  const listItems = list.map((fileName) => {
-    return new ListItem(fileName, path.join(currentDirectory, fileName));
-  });
-
-  const item = await inquirer
-    .prompt([
-      {
-        name: "fileName",
-        type: "list",
-        message: `Choose ${currentDirectory}`,
-        choices: listItems.map((item) => ({
-          name: item.fileName,
-          value: item,
-        })),
-      },
-    ])
-    .then((answer) => answer.fileName);
-
-  if (item.isDir) {
-    currentDirectory = item.path;
-    return await run();
-  } else {
-    const data = await fs.readFile(item.path, "utf-8");
-    if (!options.p) {
-      console.log(data);
-    } else {
-      const regExp = new RegExp(options.p, "igm");
-      if (!data.match(regExp)) {
-        console.log("No match!");
-      } else {
-        console.log(data.match(regExp));
+      const exists = fs.existsSync(fullPath);
+      if (!exists) {
+        return res.end("File or directory not found!");
       }
-    }
-  }
-};
-run();
+
+      const file = isFile(fullPath);
+      if (file) {
+        return fs.createReadStream(fullPath).pipe(res);
+      }
+
+      let listItems = "";
+
+      fs.readdirSync(fullPath).forEach((fileName) => {
+        const filePath = path.join(req.url, fileName);
+        listItems += `<li><a href='${filePath}'>${fileName}</a></li>`;
+      });
+
+      const HTML = fs
+        .readFileSync(path.join(__dirname, "index.html"), "utf-8")
+        .replace("##links", listItems);
+      res.writeHead(200, { "Content-Type": "text/html" });
+      return res.end(HTML);
+    })
+    .listen(5555);
+})();
