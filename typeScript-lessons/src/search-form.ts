@@ -1,18 +1,25 @@
 import { renderBlock } from "./lib.js";
-import moment from "moment";
 
 export function renderSearchFormBlock(
   checkinDate: string,
   checkoutDate: string
 ) {
-  const today = moment().format("DD-MM-YYYY");
-  const checkinDateValue = moment(checkinDate)
-    .add(1, "day")
-    .format("DD-MM-YYYY");
-  const checkoutDateValue = moment(checkinDate)
-    .add(3, "day")
-    .format("DD-MM-YYYY");
-
+  const today = new Date().toISOString().split("T")[0];
+  let checkinYear = new Date(checkinDate).getFullYear();
+  let checkinMonth = new Date(checkinDate).getMonth() + 1;
+  let checkinDay = new Date(checkinDate).getDate();
+  const checkinDateValue = new Date(
+    checkinYear + "-" + checkinMonth + "-" + (checkinDay + 1)
+  )
+    .toISOString()
+    .split("T")[0];
+  const checkoutDateValue = new Date(
+    checkinYear + "-" + checkinMonth + "-" + (checkinDay + 3)
+  )
+    .toISOString()
+    .split("T")[0];
+  const maxDate = new Date(checkinYear, checkinMonth + 1, 0);
+  const lastDay = maxDate.setDate(0).toString();
   renderBlock(
     "search-form-block",
     `
@@ -32,11 +39,11 @@ export function renderSearchFormBlock(
         <div class="row">
           <div>
             <label for="check-in-date">Дата заезда</label>
-            <input id="check-in-date" type="date" data-date-format="DD MM YYYY" value=${checkinDateValue} min=${today} max="2022-06-30" name="checkin" />
+            <input id="check-in-date" type="date" value=${checkinDateValue} min=${today} max=${lastDay} name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
-            <input id="check-out-date" type="date" data-date-format="DD MM YYYY" value=${checkoutDateValue} min=${today} max="2022-06-30" name="checkout" />
+            <input id="check-out-date" type="date" value=${checkoutDateValue} min=${today} max=${lastDay} name="checkout" />
           </div>
           <div>
             <label for="max-price">Макс. цена суток</label>
