@@ -1,5 +1,32 @@
 import { renderBlock } from "./lib.js";
 
+interface SearchFormData {
+  city: string;
+  checkinDate: string;
+  checkoutDate: string;
+  maxPrice: number;
+}
+function getSearchData() {
+  const form = document.getElementById("search-form");
+  if (form instanceof HTMLFormElement) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const searchFormData: SearchFormData = {
+        city: formData.get("city") as string,
+        checkinDate: formData.get("checkin") as string,
+        checkoutDate: formData.get("checkout") as string,
+        maxPrice: Number(formData.get("price") as string),
+      };
+      search(searchFormData);
+    });
+  }
+}
+
+function search(searchFormData: SearchFormData): void {
+  console.log(searchFormData);
+}
+
 export function renderSearchFormBlock(
   checkinDate: string,
   checkoutDate: string
@@ -23,12 +50,12 @@ export function renderSearchFormBlock(
   renderBlock(
     "search-form-block",
     `
-    <form>
+    <form id="search-form" type="submit">
       <fieldset class="search-filedset">
         <div class="row">
           <div>
             <label for="city">Город</label>
-            <input id="city" type="text" disabled value="Санкт-Петербург" />
+            <input id="city" type="text" value="Санкт-Петербург" name="city" />
             <input type="hidden" disabled value="59.9386,30.3141" />
           </div>
           <!--<div class="providers">
@@ -50,11 +77,12 @@ export function renderSearchFormBlock(
             <input id="max-price" type="text" value="" name="price" class="max-price" />
           </div>
           <div>
-            <div><button>Найти</button></div>
+            <div><button >Найти</button></div>
           </div>
         </div>
       </fieldset>
     </form>
     `
   );
+  getSearchData();
 }
