@@ -1,8 +1,9 @@
 import { renderSearchFormBlock } from "./search-form.js";
-import { renderSearchStubBlock } from "./search-results.js";
+import { renderSearchStubBlock, toggleFavoriteItem } from "./search-results.js";
 import { getUserData, setUserData } from "./user.js";
 import { renderToast } from "./lib.js";
 
+window["toggleFavoriteItem"] = toggleFavoriteItem;
 window.addEventListener("DOMContentLoaded", () => {
   setUserData();
   getUserData();
