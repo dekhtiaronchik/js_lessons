@@ -1,12 +1,20 @@
 import { renderBlock } from "./lib.js";
+import {
+  search,
+  renderSearchResultsBlock,
+  renderEmptyOrErrorSearchBlock,
+  Place,
+  getResultView,
+} from "./search-results.js";
 
-interface SearchFormData {
+export interface SearchFormData {
   city: string;
   checkinDate: string;
   checkoutDate: string;
   maxPrice: number;
 }
-function getSearchData() {
+
+export function getSearchData() {
   const form = document.getElementById("search-form");
   if (form instanceof HTMLFormElement) {
     form.addEventListener("submit", (e) => {
@@ -18,13 +26,22 @@ function getSearchData() {
         checkoutDate: formData.get("checkout") as string,
         maxPrice: Number(formData.get("price") as string),
       };
-      search(searchFormData);
+      search(searchFormData)
+        .then((searchResults) => {
+          if (searchResults.length > 0) {
+            let resultsList = searchResults.map((el) => getResultView(el));
+            renderSearchResultsBlock(resultsList);
+          } else {
+            renderEmptyOrErrorSearchBlock(
+              "По вашему запросу ничего не найдено!"
+            );
+          }
+        })
+        .catch((er) => {
+          renderEmptyOrErrorSearchBlock(er);
+        });
     });
   }
-}
-
-function search(searchFormData: SearchFormData): void {
-  console.log(searchFormData);
 }
 
 export function renderSearchFormBlock(

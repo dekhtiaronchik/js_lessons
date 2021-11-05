@@ -1,11 +1,11 @@
 import { renderBlock } from "./lib.js";
+import { FavoriteItem } from "./search-results.js";
 
 export function setUserData() {
   localStorage.user = JSON.stringify({
     userName: "Ann Smith",
     avatarLink: "/img/avatar.png",
   });
-  localStorage.favoritesAmount = 3;
 }
 
 export function getUserData(): void {
@@ -14,12 +14,12 @@ export function getUserData(): void {
   renderUserBlock(user.userName, user.avatarLink, favoriteItemsAmount);
 }
 
-export function getFavoritesAmount(): unknown {
-  let favoriteItemsAmount = localStorage.getItem("favoritesAmount");
-  if (favoriteItemsAmount !== null) {
-    return Number(favoriteItemsAmount);
+export function getFavoritesAmount(): number {
+  if (!localStorage.favoriteItems) {
+    return 0;
   }
-  return favoriteItemsAmount;
+  let favoritesItems: FavoriteItem[] = JSON.parse(localStorage.favoriteItems);
+  return favoritesItems.length;
 }
 
 export function renderUserBlock(
@@ -28,7 +28,7 @@ export function renderUserBlock(
   favoriteItemsAmount?: unknown
 ) {
   const favoritesCaption =
-    favoriteItemsAmount > 0 ? favoriteItemsAmount.toString() : "ничего нет";
+    favoriteItemsAmount > 0 ? favoriteItemsAmount : "ничего нет";
   const hasFavoriteItems = favoriteItemsAmount > 0 ? true : false;
 
   renderBlock(
