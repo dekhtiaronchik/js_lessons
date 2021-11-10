@@ -1,9 +1,11 @@
 import { renderBlock } from "./lib.js";
 import { SearchFormData } from "./search-form";
 import { getUserData } from "./user.js";
+import { sdk } from "./sdk/use-sdk.js";
+import { BookData, Database } from "./sdk/flat-rent-sdk.js";
 
 export interface Place {
-  id: number;
+  id: string;
   name: string;
   description: string;
   image: string;
@@ -18,7 +20,9 @@ export interface FavoriteItem {
   image: string;
 }
 
-export function search(searchFormData: SearchFormData): Promise<Place[]> {
+export function searchLocalJson(
+  searchFormData: SearchFormData
+): Promise<Place[]> {
   return fetch(" http://localhost:4000/places")
     .then((r) => r.json())
     .then((data) => {
@@ -28,6 +32,38 @@ export function search(searchFormData: SearchFormData): Promise<Place[]> {
       );
       return searchResults;
     });
+}
+
+export function searchSDK(searchFormData: SearchFormData): Database[] {
+  const bookData: BookData = {
+    city: searchFormData.city,
+    checkInDate: new Date(searchFormData.checkinDate),
+    checkOutDate: new Date(searchFormData.checkoutDate),
+    priceLimit: searchFormData.maxPrice,
+  };
+  return sdk.search(bookData);
+}
+
+function handler(item: Database): Place {
+  const place: Place = {
+    id: item.id,
+    name: item.title,
+    description: item.details,
+    image: item.photos[0],
+    remoteness: 0,
+    bookedDates: [],
+    price: item.price,
+  };
+  return place;
+}
+
+export async function search(searchFormData: SearchFormData): Promise<Place[]> {
+  const jsonData = await searchLocalJson(searchFormData);
+  const sdkData = await searchSDK(searchFormData);
+  let data: Place[] = sdkData.map((item) => {
+    return handler(item);
+  });
+  return jsonData.concat(data);
 }
 
 export function toggleFavoriteItem(

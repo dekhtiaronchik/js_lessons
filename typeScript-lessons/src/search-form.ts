@@ -9,8 +9,8 @@ import {
 
 export interface SearchFormData {
   city: string;
-  checkinDate: string;
-  checkoutDate: string;
+  checkinDate: Date;
+  checkoutDate: Date;
   maxPrice: number;
 }
 
@@ -22,8 +22,8 @@ export function getSearchData() {
       const formData = new FormData(form);
       const searchFormData: SearchFormData = {
         city: formData.get("city") as string,
-        checkinDate: formData.get("checkin") as string,
-        checkoutDate: formData.get("checkout") as string,
+        checkinDate: new Date(formData.get("checkin") as string),
+        checkoutDate: new Date(formData.get("checkout") as string),
         maxPrice: Number(formData.get("price") as string),
       };
       search(searchFormData)
