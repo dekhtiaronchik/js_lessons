@@ -5,7 +5,9 @@
     "module": "es2015",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "lib": ["DOM", "ES2017"]
+    "lib": ["DOM", "ES2017"],
+    "allowJs": true
   },
+  "include": ["./src/**/*"],
   "files": ["src/index.ts"]
 }
