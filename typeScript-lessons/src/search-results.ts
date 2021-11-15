@@ -52,7 +52,7 @@ function mapToPlace(item: Database): Place {
     image: item.photos[0],
     remoteness: Math.floor(Math.random() * (20 - 1)) + 1,
     bookedDates: [],
-    price: item.totalPrice || item.price,
+    price: item.totalPrice || item.price || 0,
   };
   return place;
 }
@@ -74,7 +74,7 @@ export function toggleFavoriteItem(
   let favoriteItems: FavoriteItem[] = localStorage.favoriteItems
     ? JSON.parse(localStorage.favoriteItems)
     : [];
-  const result: FavoriteItem = favoriteItems.find(
+  const result = favoriteItems.find(
     (favoriteItem) => favoriteItem.id === itemId
   );
   let newFavoriteItems: FavoriteItem[];
@@ -102,7 +102,7 @@ export function renderSearchStubBlock() {
   );
 }
 
-export function renderEmptyOrErrorSearchBlock(reasonMessage) {
+export function renderEmptyOrErrorSearchBlock(reasonMessage: String) {
   renderBlock(
     "search-results-block",
     `
@@ -138,7 +138,7 @@ export function getResultView(searchResult: Place) {
       </li>`;
 }
 
-export function renderSearchResultsBlock(resultsList) {
+export function renderSearchResultsBlock(resultsList: string[]) {
   renderBlock(
     "search-results-block",
     `

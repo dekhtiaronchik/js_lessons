@@ -25,7 +25,7 @@ export function getFavoritesAmount(): number {
 export function renderUserBlock(
   name: string,
   avatarLink: string,
-  favoriteItemsAmount?: unknown
+  favoriteItemsAmount: number
 ) {
   const favoritesCaption =
     favoriteItemsAmount > 0 ? favoriteItemsAmount : "ничего нет";

@@ -52,17 +52,17 @@ export function sort(value: string): void {
   console.log(value);
   switch (value) {
     case "lower":
-      window["places"].sort((a, b) => {
+      window["places"].sort((a: Place, b: Place) => {
         return a.price - b.price;
       });
       break;
     case "higher":
-      window["places"].sort((a, b) => {
+      window["places"].sort((a: Place, b: Place) => {
         return b.price - a.price;
       });
       break;
     case "closer":
-      window["places"].sort((a, b) => {
+      window["places"].sort((a: Place, b: Place) => {
         return a.remoteness - b.remoteness;
       });
       break;

@@ -1,7 +1,19 @@
 import { renderSearchFormBlock, sort } from "./search-form.js";
-import { renderSearchStubBlock, toggleFavoriteItem } from "./search-results.js";
+import {
+  renderSearchStubBlock,
+  toggleFavoriteItem,
+  Place,
+} from "./search-results.js";
 import { getUserData, setUserData } from "./user.js";
 import { renderToast } from "./lib.js";
+
+declare global {
+  interface Window {
+    places: Place[];
+    sort: any;
+    toggleFavoriteItem: any;
+  }
+}
 
 window["places"] = [];
 window["sort"] = sort;
