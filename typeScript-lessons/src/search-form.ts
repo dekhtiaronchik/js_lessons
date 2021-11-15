@@ -14,6 +14,10 @@ export interface SearchFormData {
   maxPrice: number;
 }
 
+function mapToHTML(places: Place[]): string[] {
+  return places.map((el) => getResultView(el));
+}
+
 export function getSearchData() {
   const form = document.getElementById("search-form");
   if (form instanceof HTMLFormElement) {
@@ -29,8 +33,8 @@ export function getSearchData() {
       search(searchFormData)
         .then((searchResults) => {
           if (searchResults.length > 0) {
-            let resultsList = searchResults.map((el) => getResultView(el));
-            renderSearchResultsBlock(resultsList);
+            window["places"] = searchResults;
+            sort("higher");
           } else {
             renderEmptyOrErrorSearchBlock(
               "По вашему запросу ничего не найдено!"
@@ -42,6 +46,28 @@ export function getSearchData() {
         });
     });
   }
+}
+
+export function sort(value: string): void {
+  console.log(value);
+  switch (value) {
+    case "lower":
+      window["places"].sort((a, b) => {
+        return a.price - b.price;
+      });
+      break;
+    case "higher":
+      window["places"].sort((a, b) => {
+        return b.price - a.price;
+      });
+      break;
+    case "closer":
+      window["places"].sort((a, b) => {
+        return a.remoteness - b.remoteness;
+      });
+      break;
+  }
+  renderSearchResultsBlock(mapToHTML(window["places"]));
 }
 
 export function renderSearchFormBlock(

@@ -1,8 +1,10 @@
-import { renderSearchFormBlock } from "./search-form.js";
+import { renderSearchFormBlock, sort } from "./search-form.js";
 import { renderSearchStubBlock, toggleFavoriteItem } from "./search-results.js";
 import { getUserData, setUserData } from "./user.js";
 import { renderToast } from "./lib.js";
 
+window["places"] = [];
+window["sort"] = sort;
 window["toggleFavoriteItem"] = toggleFavoriteItem;
 window.addEventListener("DOMContentLoaded", () => {
   setUserData();
