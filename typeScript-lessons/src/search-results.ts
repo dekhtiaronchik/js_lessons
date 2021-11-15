@@ -44,15 +44,15 @@ export function searchSDK(searchFormData: SearchFormData): Database[] {
   return sdk.search(bookData);
 }
 
-function handler(item: Database): Place {
+function mapToPlace(item: Database): Place {
   const place: Place = {
     id: item.id,
     name: item.title,
     description: item.details,
     image: item.photos[0],
-    remoteness: 0,
+    remoteness: Math.floor(Math.random() * (20 - 1)) + 1,
     bookedDates: [],
-    price: item.price,
+    price: item.totalPrice || item.price,
   };
   return place;
 }
@@ -61,7 +61,7 @@ export async function search(searchFormData: SearchFormData): Promise<Place[]> {
   const jsonData = await searchLocalJson(searchFormData);
   const sdkData = await searchSDK(searchFormData);
   let data: Place[] = sdkData.map((item) => {
-    return handler(item);
+    return mapToPlace(item);
   });
   return jsonData.concat(data);
 }
@@ -118,7 +118,7 @@ export function getResultView(searchResult: Place) {
   return `<li class="result">
         <div class="result-container">
           <div class="result-img-container">
-            <div class="favorites active" onclick="toggleFavoriteItem(${searchResult.id}, '${searchResult.name}', '${searchResult.image}')"></div>
+            <div class="favorites active" onclick="toggleFavoriteItem('${searchResult.id}', '${searchResult.name}', '${searchResult.image}')"></div>
             <img class="result-img" src=${searchResult.image} alt="">
           </div>	
           <div class="result-info">
@@ -146,10 +146,10 @@ export function renderSearchResultsBlock(resultsList) {
         <p>Результаты поиска</p>
         <div class="search-results-filter">
             <span><i class="icon icon-filter"></i> Сортировать:</span>
-            <select>
-                <option selected="">Сначала дешёвые</option>
-                <option selected="">Сначала дорогие</option>
-                <option>Сначала ближе</option>
+            <select id='select-block' onchange='sort(this.value)'>
+                <option value='lower'>Сначала дешёвые</option>
+                <option selected value='higher'>Сначала дорогие</option>
+                <option value='closer'>Сначала ближе</option>
             </select>
         </div>
     </div>

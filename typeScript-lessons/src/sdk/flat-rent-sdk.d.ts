@@ -12,7 +12,8 @@ export interface Database {
   photos: string[];
   coordinates: number[];
   bookedDates: Date[];
-  price: number;
+  totalPrice?: number;
+  price?: number;
 }
 
 export interface BookData {
@@ -21,8 +22,6 @@ export interface BookData {
   checkOutDate: Date;
   priceLimit: number;
 }
-
-//interface для database. Потом в search замапить в тип Place, чтобы можно было сконкатить
 
 export const backendPort: number;
 export const localStorageKey: string;
