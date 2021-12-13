@@ -1,4 +1,74 @@
 import { renderBlock } from "./lib.js";
+import {
+  search,
+  renderSearchResultsBlock,
+  renderEmptyOrErrorSearchBlock,
+  Place,
+  getResultView,
+} from "./search-results.js";
+
+export interface SearchFormData {
+  city: string;
+  checkinDate: Date;
+  checkoutDate: Date;
+  maxPrice: number;
+}
+
+function mapToHTML(places: Place[]): string[] {
+  return places.map((el) => getResultView(el));
+}
+
+export function getSearchData() {
+  const form = document.getElementById("search-form");
+  if (form instanceof HTMLFormElement) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const searchFormData: SearchFormData = {
+        city: formData.get("city") as string,
+        checkinDate: new Date(formData.get("checkin") as string),
+        checkoutDate: new Date(formData.get("checkout") as string),
+        maxPrice: Number(formData.get("price") as string),
+      };
+      search(searchFormData)
+        .then((searchResults) => {
+          if (searchResults.length > 0) {
+            window["places"] = searchResults;
+            sort("higher");
+          } else {
+            renderEmptyOrErrorSearchBlock(
+              "По вашему запросу ничего не найдено!"
+            );
+          }
+        })
+        .catch((er) => {
+          renderEmptyOrErrorSearchBlock(er);
+        });
+    });
+  }
+}
+
+export function sort(value: string): void {
+  console.log(value);
+  switch (value) {
+    case "lower":
+      window["places"].sort((a: Place, b: Place) => {
+        return a.price - b.price;
+      });
+      break;
+    case "higher":
+      window["places"].sort((a: Place, b: Place) => {
+        return b.price - a.price;
+      });
+      break;
+    case "closer":
+      window["places"].sort((a: Place, b: Place) => {
+        return a.remoteness - b.remoteness;
+      });
+      break;
+  }
+  renderSearchResultsBlock(mapToHTML(window["places"]));
+}
 
 export function renderSearchFormBlock(
   checkinDate: string,
@@ -23,12 +93,12 @@ export function renderSearchFormBlock(
   renderBlock(
     "search-form-block",
     `
-    <form>
+    <form id="search-form" type="submit">
       <fieldset class="search-filedset">
         <div class="row">
           <div>
             <label for="city">Город</label>
-            <input id="city" type="text" disabled value="Санкт-Петербург" />
+            <input id="city" type="text" value="Санкт-Петербург" name="city" />
             <input type="hidden" disabled value="59.9386,30.3141" />
           </div>
           <!--<div class="providers">
@@ -50,11 +120,12 @@ export function renderSearchFormBlock(
             <input id="max-price" type="text" value="" name="price" class="max-price" />
           </div>
           <div>
-            <div><button>Найти</button></div>
+            <div><button >Найти</button></div>
           </div>
         </div>
       </fieldset>
     </form>
     `
   );
+  getSearchData();
 }
